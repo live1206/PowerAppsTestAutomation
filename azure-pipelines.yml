@@ -21,7 +21,6 @@ parameters:
    default: windows-latest
    values:
    - windows-latest
-   - vs2017-win2016
    - windows-2019
  - name: BrowserType
    displayName: Browser Type
