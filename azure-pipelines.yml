@@ -22,23 +22,17 @@ resources:
       endpoint: GitHub-PowerApps-Testing
   
 variables:
-- name: PortalUrl
-  value: https://make.powerapps.com
+- PortalUrl: https://make.powerapps.com
   # Browser PrivateMode usage (true/false)
-- name: PrivateMode
-  value: true
+- PrivateMode: true
   # FileName where TestAutomationURLs are stored in JSON format
-- name: TestUrlFileName 
-  value: TestURLs.json
+- TestUrlFileName: TestURLs.json
   # Project name of repo containing TestAutomationURLs (spaces should be encoded as %20)
   # Example: Contoso Test Framework --> Contoso%20Test%20Framework
-- name: LocalProjectName
-  value: PowerAppsTestAutomation
-- name: BrowserType
-  value: Chrome
-- name: LoginMethod
-  value: FederatedIdentity
-  
+- LocalProjectName: PowerAppsTestAutomation
+- BrowserType: Chrome
+- LoginMethod: FederatedIdentity
+
 steps:
 - checkout: self
 - checkout: PowerAppsTestAutomation
