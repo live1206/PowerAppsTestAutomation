@@ -3,6 +3,12 @@
 name: PowerAppsTestAutomation-$(date:yyyyMMdd)$(rev:.r)
 
 trigger: none
+pool:
+  vmImage: windows-latest
+  demands:
+  - msbuild
+  - visualstudio
+  - vstest
 
 resources:
   repositories:
@@ -53,27 +59,26 @@ jobs:
   - name: PortalUrl
     value: https://make.powerapps.com
     # Browser PrivateMode usage (true/false)
-  - name: PrivateMode
-    value: true
+  PrivateMode: true
     # FileName where TestAutomationURLs are stored in JSON format
-  - name: TestUrlFileName 
-    value: TestURLs.json
+  TestUrlFileName: TestURLs.json
     # Project name of repo containing TestAutomationURLs (spaces should be encoded as %20)
     # Example: Contoso Test Framework --> Contoso%20Test%20Framework
-  - name: LocalProjectName
-    value: PowerAppsTestAutomation
+  LocalProjectName: PowerAppsTestAutomation
+  BrowserType: Chrome
+  LoginMethod: FederatedIdentity
 
-  steps:
-  - checkout: self
-  - checkout: PowerAppsTestAutomation
-  #- template: localsteps.yml # Provide optional local YAML template here
-  - template: frameworksteps.yml@PowerAppsTestAutomation
-    parameters:
-      OnlineUsername: $(OnlineUsername)
-      OnlinePassword: $(OnlinePassword)
-      OnlineUrl: $(PortalUrl)
-      BrowserType: ${{ parameters.BrowserType }}
-      # File location format is /s/TeamProjectName/FilePathToTestAutomationURLs.json
-      TestAutomationURLFilePath: $(Build.SourcesDirectory)\$(LocalProjectName)\$(TestUrlFileName)
-      UsePrivateMode: $(PrivateMode)
-      LoginMethod: ${{ parameters.LoginMethod }}
+steps:
+- checkout: self
+- checkout: PowerAppsTestAutomation
+#- template: localsteps.yml # Provide optional local YAML template here
+- template: frameworksteps.yml@PowerAppsTestAutomation
+  parameters:
+    OnlineUsername: $(OnlineUsername)
+    OnlinePassword: $(OnlinePassword)
+    OnlineUrl: $(PortalUrl)
+    BrowserType: $(BrowserType)
+    # File location format is /s/TeamProjectName/FilePathToTestAutomationURLs.json
+    TestAutomationURLFilePath: $(Build.SourcesDirectory)\$(LocalProjectName)\$(TestUrlFileName)
+    UsePrivateMode: $(PrivateMode)
+    LoginMethod: $(LoginMethod)
