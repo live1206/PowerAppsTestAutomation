@@ -27,6 +27,16 @@ variables:
 - name: loginMethod
   value: FederatedIdentity
 
+resources:
+  repositories:
+    - repository: PowerAppsTestAutomation
+      type: github
+      # GitHub Repo(e.g. <FORK>/PowerAppsTestAutomation)
+      # Recommended to Fork or Duplicate if custom auth flows are required
+      name: live1206/PowerAppsTestAutomation
+      ref: master
+      # Name of the GitHub OAuth ADO Service Connection
+      endpoint: GitHub-PowerApps-Testing
 steps:
 - checkout: self
 - checkout: PowerAppsTestAutomation
@@ -41,14 +51,3 @@ steps:
     TestAutomationURLFilePath: $(Build.SourcesDirectory)\$(LocalProjectName)\$(TestUrlFileName)
     UsePrivateMode: $(PrivateMode)
     LoginMethod: $(loginMethod)
-
-resources:
-repositories:
-  - repository: PowerAppsTestAutomation
-    type: github
-    # GitHub Repo(e.g. <FORK>/PowerAppsTestAutomation)
-    # Recommended to Fork or Duplicate if custom auth flows are required
-    name: live1206/PowerAppsTestAutomation
-    ref: master
-    # Name of the GitHub OAuth ADO Service Connection
-    endpoint: GitHub-PowerApps-Testing
