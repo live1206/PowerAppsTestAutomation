@@ -3,48 +3,11 @@
 name: PowerAppsTestAutomation-$(date:yyyyMMdd)$(rev:.r)
 
 trigger: none
+pool:
+  vmImage: windows-latest
 
-resources:
-  repositories:
-    - repository: PowerAppsTestAutomation
-      type: github
-      # GitHub Repo(e.g. <FORK>/PowerAppsTestAutomation)
-      # Recommended to Fork or Duplicate if custom auth flows are required
-      name: live1206/PowerAppsTestAutomation
-      ref: master
-      # Name of the GitHub OAuth ADO Service Connection
-      endpoint: GitHub-PowerApps-Testing
-
-parameters:
- - name: image
-   displayName: Pool Image
-   type: string
-   # See https://github.com/MicrosoftDocs/azure-devops-docs/blob/master/docs/pipelines/agents/hosted.md#use-a-microsoft-hosted-agent for more pool types
-   default: windows-latest
-   values:
-   - windows-latest
-   - windows-2019
- - name: BrowserType
-   displayName: Browser Type
-   type: string
-   default: All
-   values:
-   - Chrome
-   - Firefox
-   - All
- - name: LoginMethod
-   displayName: Login Type # See: https://docs.microsoft.com/en-us/office365/servicedescriptions/office-365-platform-service-description/user-account-management
-   type: string
-   default: CloudIdentity
-   values:
-   - CloudIdentity # Uses the default Office 365 Sign-In Service for authentication
-   - FederatedIdentity # Uses a Custom Login Action method using AD FS 2.0 or other Security Token Services for authentication. Custom code is required.
-   - PassThrough # Federated login scenario where the provided user credential is automatically logged in, requires special agent configurations
-
-jobs:
-- job: "PowerAppsTestFrameworkAutomation"
   pool:
-    vmImage: ${{ parameters.image }}
+    vmImage: windows-latest
     demands:
     - msbuild
     - visualstudio
@@ -62,6 +25,10 @@ jobs:
     # Example: Contoso Test Framework --> Contoso%20Test%20Framework
   - name: LocalProjectName
     value: PowerAppsTestAutomation
+  - name: browserType
+    value: Chrome
+  - name: loginMethod
+    value: FederatedIdentity
 
   steps:
   - checkout: self
@@ -72,8 +39,19 @@ jobs:
       OnlineUsername: $(OnlineUsername)
       OnlinePassword: $(OnlinePassword)
       OnlineUrl: $(PortalUrl)
-      BrowserType: ${{ parameters.BrowserType }}
+      BrowserType: $(browserType)
       # File location format is /s/TeamProjectName/FilePathToTestAutomationURLs.json
       TestAutomationURLFilePath: $(Build.SourcesDirectory)\$(LocalProjectName)\$(TestUrlFileName)
       UsePrivateMode: $(PrivateMode)
-      LoginMethod: ${{ parameters.LoginMethod }}
+      LoginMethod: $(loginMethod)
+
+resources:
+  repositories:
+    - repository: PowerAppsTestAutomation
+      type: github
+      # GitHub Repo(e.g. <FORK>/PowerAppsTestAutomation)
+      # Recommended to Fork or Duplicate if custom auth flows are required
+      name: live1206/PowerAppsTestAutomation
+      ref: master
+      # Name of the GitHub OAuth ADO Service Connection
+      endpoint: GitHub-PowerApps-Testing
