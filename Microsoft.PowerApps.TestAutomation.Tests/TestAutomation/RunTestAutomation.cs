@@ -232,10 +232,12 @@ namespace Microsoft.PowerApps.TestAutomation.Tests
 
             var driver = args.Driver;
 
-            var passwordInput = driver.WaitUntilAvailable(By.Id("passwordInput"));
+            driver.ClickWhenAvailable(By.Id("FormsAuthentication"), TimeSpan.FromSeconds(20));
+
+            var passwordInput = driver.WaitUntilAvailable(By.Id("passwordInput"), TimeSpan.FromSeconds(20));
             passwordInput.SendKeys(args.Password.ToUnsecureString());
 
-            driver.ClickWhenAvailable(By.Id("submitButton"), TimeSpan.FromSeconds(5));
+            driver.ClickWhenAvailable(By.Id("submitButton"), TimeSpan.FromSeconds(20));
 
             // Insert any additional code as required for the SSO scenario
 
