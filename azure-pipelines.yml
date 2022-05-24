@@ -9,6 +9,18 @@ pool:
   - msbuild
   - visualstudio
   - vstest
+
+resources:
+  repositories:
+    - repository: PowerAppsTestAutomation
+      type: github
+      # GitHub Repo(e.g. <FORK>/PowerAppsTestAutomation)
+      # Recommended to Fork or Duplicate if custom auth flows are required
+      name: live1206/PowerAppsTestAutomation
+      ref: master
+      # Name of the GitHub OAuth ADO Service Connection
+      endpoint: GitHub-PowerApps-Testing
+  
 variables:
 - name: PortalUrl
   value: https://make.powerapps.com
@@ -22,21 +34,11 @@ variables:
   # Example: Contoso Test Framework --> Contoso%20Test%20Framework
 - name: LocalProjectName
   value: PowerAppsTestAutomation
-- name: browserType
+- name: BrowserType
   value: Chrome
-- name: loginMethod
+- name: LoginMethod
   value: FederatedIdentity
-
-resources:
-  repositories:
-    - repository: PowerAppsTestAutomation
-      type: github
-      # GitHub Repo(e.g. <FORK>/PowerAppsTestAutomation)
-      # Recommended to Fork or Duplicate if custom auth flows are required
-      name: live1206/PowerAppsTestAutomation
-      ref: master
-      # Name of the GitHub OAuth ADO Service Connection
-      endpoint: GitHub-PowerApps-Testing
+  
 steps:
 - checkout: self
 - checkout: PowerAppsTestAutomation
@@ -46,8 +48,8 @@ steps:
     OnlineUsername: $(OnlineUsername)
     OnlinePassword: $(OnlinePassword)
     OnlineUrl: $(PortalUrl)
-    BrowserType: $(browserType)
+    BrowserType: $(BrowserType)
     # File location format is /s/TeamProjectName/FilePathToTestAutomationURLs.json
     TestAutomationURLFilePath: $(Build.SourcesDirectory)\$(LocalProjectName)\$(TestUrlFileName)
     UsePrivateMode: $(PrivateMode)
-    LoginMethod: $(loginMethod)
+    LoginMethod: $(LoginMethod)
