@@ -16,14 +16,6 @@ resources:
       endpoint: GitHub-PowerApps-Testing
 
 parameters:
- - name: image
-   displayName: Pool Image
-   type: string
-   # See https://github.com/MicrosoftDocs/azure-devops-docs/blob/master/docs/pipelines/agents/hosted.md#use-a-microsoft-hosted-agent for more pool types
-   default: windows-latest
-   values:
-   - windows-latest
-   - windows-2019
  - name: BrowserType
    displayName: Browser Type
    type: string
@@ -44,7 +36,7 @@ parameters:
 jobs:
 - job: "PowerAppsTestFrameworkAutomation"
   pool:
-    vmImage: ${{ parameters.image }}
+    vmImage: windows-latest
     demands:
     - msbuild
     - visualstudio
