@@ -4,17 +4,6 @@ name: PowerAppsTestAutomation-$(date:yyyyMMdd)$(rev:.r)
 
 trigger: none
 
-resources:
-  repositories:
-    - repository: PowerAppsTestAutomation
-      type: github
-      # GitHub Repo(e.g. <FORK>/PowerAppsTestAutomation)
-      # Recommended to Fork or Duplicate if custom auth flows are required
-      name: live1206/PowerAppsTestAutomation
-      ref: master
-      # Name of the GitHub OAuth ADO Service Connection
-      endpoint: GitHub-PowerApps-Testing
-
 parameters:
  - name: BrowserType
    displayName: Browser Type
@@ -24,7 +13,7 @@ parameters:
    - Chrome
    - Firefox
    - All
-   
+
 jobs:
 - job: "PowerAppsTestFrameworkAutomation"
   pool:
