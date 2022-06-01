@@ -54,6 +54,8 @@ jobs:
     # Example: Contoso Test Framework --> Contoso%20Test%20Framework
   - name: LocalProjectName
     value: PowerAppsTestAutomation
+  - name: LoginMethod
+    value: FederatedIdentity
 
   steps:
   - checkout: self
